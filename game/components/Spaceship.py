@@ -44,7 +44,7 @@ class Spaceship:
         
 
     def move_up(self, game_speed):
-        if self.rect.y >= 0:
+        if self.rect.y >= (SCREEN_HEIGHT//2):
             self.rect.y -= game_speed
 
     def move_down(self, game_speed):
