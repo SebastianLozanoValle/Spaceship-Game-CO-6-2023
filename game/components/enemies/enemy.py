@@ -20,7 +20,7 @@ class Enemy:
 
     def update(self):
         self.move()
-        if self.rect.y >= SCREEN_WIDTH:
+        if self.rect.y >= SCREEN_HEIGHT:
             self.is_visible = False
         self.index += 1
 

@@ -1,4 +1,5 @@
 from game.components.enemies.ship import Ship
+from game.components.enemies.xwing import XWing
 
 class EnemyHandler:
     def __init__(self):
@@ -16,8 +17,9 @@ class EnemyHandler:
             enemy.draw(screen)
 
     def add_enemy(self):
-        if len(self.enemies) < 2:
+        if len(self.enemies) <= 2:
             self.enemies.append(Ship())
+            self.enemies.append(XWing())
 
     def remove_enemy(self, enemy):
         self.enemies.remove(enemy)
