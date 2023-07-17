@@ -21,6 +21,7 @@ class Game:
 
     def run(self):
         # Game loop: events - update - draw
+        self.enemy_handler.clock = self.clock
         self.playing = True
         while self.playing:
             self.events()
@@ -45,6 +46,7 @@ class Game:
         self.draw_background()
         self.player.draw(self.screen)
         self.enemy_handler.draw(self.screen)
+        self.enemy_handler.draw_timer(self.screen)
         pygame.display.update()
         pygame.display.flip()
 
@@ -57,3 +59,5 @@ class Game:
             self.screen.blit(image, (self.x_pos_bg, self.y_pos_bg - image_height))
             self.y_pos_bg = 0
         self.y_pos_bg += self.game_speed
+    
+    
