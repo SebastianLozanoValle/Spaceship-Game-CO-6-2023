@@ -18,6 +18,7 @@ class Enemy:
         self.mov_x = random.choice(self.MOV_X)
         self.index = 0
         self.is_visible = True
+        self.is_alive = True
         self.shooting_time = 0
 
     def update(self, bullet_handler):

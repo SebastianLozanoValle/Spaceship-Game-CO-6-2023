@@ -34,3 +34,4 @@ LEFT = 'left'
 RIGTH = 'rigth'
 
 BULLET_ENEMY_TYPE = 'enemy'
+BULLET_PLAYER_TYPE = 'Spaceship'
