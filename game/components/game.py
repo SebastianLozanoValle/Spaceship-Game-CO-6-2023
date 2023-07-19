@@ -24,6 +24,7 @@ class Game:
         self.score = 0
         self.timer = 0
         self.number_deaths = 0
+        self.best_score = 0
 
     def run(self):
         # Game loop: events - update - draw
@@ -56,6 +57,8 @@ class Game:
                 pygame.time.delay(300)
                 self.playing = False
                 self.number_deaths += 1
+                if self.score > self.best_score:
+                    self.best_score = self.score
 
 
     def draw(self):
@@ -90,12 +93,14 @@ class Game:
 
     def draw_menu(self):
         if self.number_deaths == 0:
-            text, text_rect = text_utils.get_message('press any key to start', 30, (255,255,255))
+            text, text_rect = text_utils.get_message('Press any key to start', 30, (255,255,255))
             self.screen.blit(text, text_rect)
         else:
-            text, text_rect = text_utils.get_message('press any key to restart', 30, (255,255,255))
-            score, score_rect = text_utils.get_message(f'your score is: {self.score}', 30, (255,255,255), heigth=SCREEN_HEIGHT//2 + 50)
+            text, text_rect = text_utils.get_message('Press any key to restart', 30, (255,255,255))
+            best_score, best_score_rect = text_utils.get_message(f'The best score is: {self.best_score}', 30, (255,255,255), heigth=SCREEN_HEIGHT//2 + 50)
+            score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 30, (255,255,255), heigth=SCREEN_HEIGHT//2 + 100)
             self.screen.blit(text, text_rect)
+            self.screen.blit(best_score,best_score_rect)
             self.screen.blit(score, score_rect)
     
     def draw_score(self):
