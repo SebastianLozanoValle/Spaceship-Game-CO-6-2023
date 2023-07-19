@@ -6,14 +6,19 @@ from game.components.enemies.xwing import XWing
 # from game.components.enemies
 
 class EnemyHandler:
-    def __init__(self):
+    def __init__(self, game):
+        self.game = game
         self.enemies = []
-        self.clock = pygame.time.Clock()
-        self.timer = 0
+        self.enemies_destroyed = 0
         self.num_ships = 0
         self.num_xwings = 0
         self.enemies_dic = {
             "0": Ship(),
+            "1": Ship(),
+            "2": Ship(),
+            "3": Ship(),
+            "4": Ship(),
+            "5": Ship(),
         }
 
     def update(self, bullet_handler):
@@ -23,8 +28,8 @@ class EnemyHandler:
             enemy.update(bullet_handler)
             if not enemy.is_visible or not enemy.is_alive:
                 self.remove_enemy(enemy)
-
-        self.timer += self.clock.get_time() / 1000
+            if not enemy.is_alive:
+                self.enemies_destroyed += 1
 
     def draw(self, screen):
         for enemy in self.enemies:
@@ -34,13 +39,23 @@ class EnemyHandler:
 
     def add_enemy(self):
         if len(self.enemies) < 5:
-            if self.num_ships < 4:  # Verificar si hay menos de 4 naves
-                if self.num_ships == 0:
-                    self.enemies.extend([Ship() for _ in range(4)])  # Agregar 4 instancias de Ship
-                    self.num_ships += 4
-            if self.num_xwings == 0 and self.timer >= 10:
+            if self.num_ships < 4:
+                self.enemies.append(Ship())
+                self.num_ships += 1
+                # random_key = random.choice(list(self.enemies_dic.keys()))
+                # self.enemies.append(self.enemies_dic[random_key])
+                # self.num_ships += 1
+            if self.num_xwings == 0 and self.game.timer >= 10:
                 self.enemies.append(XWing())
                 self.num_xwings += 1
+        # if len(self.enemies) < 5:
+        #     if self.num_ships < 4:  # Verificar si hay menos de 4 naves
+        #         if self.num_ships == 0:
+        #             self.enemies.extend([Ship() for _ in range(4)])  # Agregar 4 instancias de Ship
+        #             self.num_ships += 4
+        #     if self.num_xwings == 0 and self.game.timer >= 10:
+        #         self.enemies.append(XWing())
+        #         self.num_xwings += 1
 
 
 
@@ -58,10 +73,10 @@ class EnemyHandler:
         if isinstance(enemy, Ship):
             self.num_ships -= 1
         if isinstance(enemy, XWing):
-            self.num_xwings -= 1
+            self.num_xwings = 1
 
-    def draw_timer(self, screen):
-        font = pygame.font.Font(None, 36)
-        #como su nombre lo dice renderiza la fuente previamente creada y el 2f indica que despues de los dos puntos siguen 2 numeros de punto flotante, el true es para suavisar el renderizado
-        text = font.render("Tiempo transcurrido: {:.2f}".format(self.timer), True, (255, 255, 255))
-        screen.blit(text, (10, 10))
+    def reset(self):
+        self.enemies = []
+        self.enemies_destroyed = 0
+        self.num_ships = 0
+        self.num_xwings = 0
