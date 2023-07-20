@@ -4,7 +4,7 @@ from game.components.power_ups.shield import Shield
 
 class PowerUpHandler:
 
-    INTERVAL_TIME = [300, 500]
+    INTERVAL_TIME = [150,250]
 
     def __init__(self):
         self.power_ups = []

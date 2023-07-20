@@ -28,6 +28,8 @@ BULLET_CHARGED = pygame.image.load(os.path.join(IMG_DIR, "Bullet/charge.png"))
 BULLET_ENEMY = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_2.png"))
 ENEMY_1 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_1.png"))
 ENEMY_2 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_2.png"))
+ENEMY_3 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_3.png"))
+ENEMY_4 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_4.png"))
 
 FONT_STYLE = 'freesansbold.ttf'
 
@@ -37,3 +39,6 @@ RIGTH = 'rigth'
 BULLET_ENEMY_TYPE = 'enemy'
 BULLET_PLAYER_TYPE = 'Spaceship'
 CHARGED_BULLET_PLAYER_TYPE = 'charged'
+
+PLANET_1 = pygame.image.load(os.path.join(IMG_DIR, 'Other/planet_1.png'))
+PLANET_2 = pygame.image.load(os.path.join(IMG_DIR, 'Other/planet_2.png'))

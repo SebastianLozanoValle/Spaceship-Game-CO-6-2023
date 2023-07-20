@@ -11,7 +11,7 @@ class Spaceship:
     Y_POS = 500
     CHARGED_SHOOT_WAIT_TIME = 5000
     CHARGED_SHOOTING_TIME = 5
-    SHOOTING_TIME = 5
+    SHOOTING_TIME = 10
 
     def __init__(self):
         self.image = SPACESHIP
@@ -22,7 +22,7 @@ class Spaceship:
         self.shooting_time = 0
         self.has_shield = False
         self.time_up = 0
-        self.lp = 1
+        self.lp = 100000
         self.last_charged_shoot = -5000
 
     def update(self, game_speed, user_input, bullet_handler):
@@ -106,7 +106,7 @@ class Spaceship:
         self.rect = self.image.get_rect()
         self.rect.x = self.X_POS
         self.rect.y = self.Y_POS
-        self.lp = 1
+        self.lp = 10
         self.shooting_time = 0
         self.has_shield = False
         self.last_charged_shoot = -5000
