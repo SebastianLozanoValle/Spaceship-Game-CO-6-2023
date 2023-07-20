@@ -6,20 +6,13 @@ from game.components.enemies.xwing import XWing
 # from game.components.enemies
 
 class EnemyHandler:
+    ENEMY_TYPES = [Ship]
     def __init__(self, game):
         self.game = game
         self.enemies = []
         self.enemies_destroyed = 0
         self.num_ships = 0
         self.num_xwings = 0
-        self.enemies_dic = {
-            "0": Ship(),
-            "1": Ship(),
-            "2": Ship(),
-            "3": Ship(),
-            "4": Ship(),
-            "5": Ship(),
-        }
 
     def update(self, bullet_handler):
         self.add_enemy()
@@ -40,10 +33,15 @@ class EnemyHandler:
     def add_enemy(self):
         if len(self.enemies) < 5:
             if self.num_ships < 4:
-                self.enemies.append(Ship())
+                # self.enemies.append(Ship())
+                self.enemies.append(self.ENEMY_TYPES[random.randint(0, len(self.ENEMY_TYPES) - 1)]())
                 self.num_ships += 1
                 # random_key = random.choice(list(self.enemies_dic.keys()))
                 # self.enemies.append(self.enemies_dic[random_key])
+                # self.enemies.append(random.choice(self.enemies_array))
+                # print(self.enemies_array[0])
+                # print(self.enemies_array[1])
+                # self.enemies.append(random.randint(0, (len(self.enemies_array) - 1)))
                 # self.num_ships += 1
             if self.num_xwings == 0 and self.game.timer >= 10:
                 self.enemies.append(XWing())

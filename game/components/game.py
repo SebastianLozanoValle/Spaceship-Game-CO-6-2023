@@ -1,10 +1,14 @@
 import pygame
+import random
 
-from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
+from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+
+# Importar las otras clases necesarias
 from game.components.Spaceship import Spaceship
 from game.components.enemies.enemy_handler import EnemyHandler
 from game.components.bullets.bullet_handler import BulletHandler
 from game.utils import text_utils
+
 
 class Game:
     def __init__(self):
@@ -13,8 +17,8 @@ class Game:
         pygame.display.set_icon(ICON)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
-        self.playing = False
         self.running = False
+        self.playing = False
         self.game_speed = 10
         self.x_pos_bg = 0
         self.y_pos_bg = 0
@@ -23,11 +27,11 @@ class Game:
         self.bullet_handler = BulletHandler()
         self.score = 0
         self.timer = 0
+        self.game_start_time = 0
         self.number_deaths = 0
         self.best_score = 0
 
     def run(self):
-        # Game loop: events - update - draw
         self.enemy_handler.clock = self.clock
         self.running = True
         while self.running:
@@ -41,13 +45,19 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == pygame.KEYDOWN and not self.playing:
-                self.reset()
-                self.playing = True
+            elif event.type == pygame.KEYDOWN:
+                if not self.playing:
+                    self.start_game()
+
+    def start_game(self):
+        self.reset()
+        self.playing = True
+        self.timer = 0
+        self.game_start_time = pygame.time.get_ticks()
 
     def update(self):
         if self.playing:
-            self.timer += self.clock.get_time() / 1000
+            self.timer = (pygame.time.get_ticks() - self.game_start_time) / 1000
             user_input = pygame.key.get_pressed()
             self.player.update(self.game_speed, user_input, self.bullet_handler)
             self.enemy_handler.update(self.bullet_handler)
@@ -55,11 +65,10 @@ class Game:
             self.score = self.enemy_handler.enemies_destroyed
             if not self.player.is_alive:
                 pygame.time.delay(300)
-                self.playing = False
                 self.number_deaths += 1
                 if self.score > self.best_score:
                     self.best_score = self.score
-
+                self.playing = False
 
     def draw(self):
         self.draw_background()
@@ -87,7 +96,6 @@ class Game:
 
     def draw_timer(self, screen):
         font = pygame.font.Font(None, 36)
-        #como su nombre lo dice renderiza la fuente previamente creada y el 2f indica que despues de los dos puntos siguen 2 numeros de punto flotante, el true es para suavisar el renderizado
         text = font.render("Tiempo transcurrido: {:.2f}".format(self.timer), True, (255, 255, 255))
         screen.blit(text, (10, 10))
 
@@ -106,6 +114,7 @@ class Game:
     def draw_score(self):
         score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 20, (255,255,255), 1000, 40)
         self.screen.blit(score, score_rect)
+
 
     def reset(self):
         self.player.reset()
