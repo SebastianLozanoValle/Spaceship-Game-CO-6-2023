@@ -1,20 +1,20 @@
 import pygame
 
 from game.components.bullets.bullet import Bullet
-from game.utils.constants import BULLET
+from game.utils.constants import BULLET_CHARGED
 
-class BulletPlayer(Bullet):
+class BulletCharged(Bullet):
 
-    WIDTH = 9
+    WIDTH = 180
     HEIGHT = 32
-    SPEED = 20
+    SPEED = 10
 
     def __init__(self, center):
-        self.image = BULLET
+        self.image = BULLET_CHARGED
         self.image = pygame.transform.scale(self.image,(self.WIDTH, self. HEIGHT))
         self.is_alive = True
-        self.damage = 1
         super().__init__(self.image, center)
+        self.damage = 5
 
     def update(self, enemy):
         self.rect.y -= self.SPEED

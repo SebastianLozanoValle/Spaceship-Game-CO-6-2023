@@ -4,10 +4,11 @@ class Bullet:
         self.rect = self.image.get_rect()
         self.rect.center = center
         self.is_alive = True
+        self.damage = 1
 
     def update(self, object):
         if self.rect.colliderect(object.rect):
-            object.is_alive = False
+            object.lp -= self.damage
             self.is_alive = False
         
 

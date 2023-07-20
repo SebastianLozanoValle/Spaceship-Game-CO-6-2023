@@ -13,6 +13,7 @@ class BulletEnemy(Bullet):
         self.image = BULLET_ENEMY
         self.image = pygame.transform.scale(self.image,(self.WIDTH, self. HEIGHT))
         self.is_alive = True
+        self.damage = 1
         super().__init__(self.image, center)
 
     def update(self, player):

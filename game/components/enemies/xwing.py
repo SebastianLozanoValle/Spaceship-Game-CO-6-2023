@@ -13,7 +13,10 @@ class XWing(Enemy):
     def __init__ (self):
         self.image = ENEMY_2
         self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGTH))
+        self.lp = 10
         super().__init__(self.image)
+
+        
 
     def move(self):
         #obtener el tiempo en segundos ya que el metodo los retorna en milisegundos, se usa ticks para facilitar la legibilidad del codigo yno tener que pasarle parametros a la funcion
@@ -26,3 +29,4 @@ class XWing(Enemy):
 
         self.rect.x = x
         self.rect.y = y
+

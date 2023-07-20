@@ -19,10 +19,13 @@ class EnemyHandler:
         for enemy in self.enemies:
             # if type(enemy) == BulletEnemy:
             enemy.update(bullet_handler)
-            if not enemy.is_visible or not enemy.is_alive:
+            if not enemy.is_visible or enemy.lp <= 0:
                 self.remove_enemy(enemy)
-            if not enemy.is_alive:
-                self.enemies_destroyed += 1
+            if enemy.lp <= 0:
+                if isinstance(enemy, XWing):
+                    self.enemies_destroyed += 5
+                else:
+                    self.enemies_destroyed += 1
 
     def draw(self, screen):
         for enemy in self.enemies:
@@ -31,7 +34,7 @@ class EnemyHandler:
 
 
     def add_enemy(self):
-        if len(self.enemies) < 5:
+        if len(self.enemies) < 7:
             if self.num_ships < 4:
                 # self.enemies.append(Ship())
                 self.enemies.append(self.ENEMY_TYPES[random.randint(0, len(self.ENEMY_TYPES) - 1)]())
@@ -43,7 +46,7 @@ class EnemyHandler:
                 # print(self.enemies_array[1])
                 # self.enemies.append(random.randint(0, (len(self.enemies_array) - 1)))
                 # self.num_ships += 1
-            if self.num_xwings == 0 and self.game.timer >= 10:
+            if self.game.timer > 10 and self.num_xwings < 1:
                 self.enemies.append(XWing())
                 self.num_xwings += 1
         # if len(self.enemies) < 5:

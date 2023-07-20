@@ -1,6 +1,7 @@
-from game.utils.constants import BULLET_ENEMY_TYPE, BULLET_PLAYER_TYPE
+from game.utils.constants import BULLET_ENEMY_TYPE, BULLET_PLAYER_TYPE, CHARGED_BULLET_PLAYER_TYPE
 from game.components.bullets.bullet_enemy import BulletEnemy
 from game.components.bullets.bullet_player import BulletPlayer
+from game.components.bullets.bullet_charged import BulletCharged
 from game.utils.constants import SCREEN_HEIGHT
 
 class BulletHandler:
@@ -12,6 +13,9 @@ class BulletHandler:
             if type(bullet) == BulletEnemy:
                 bullet.update(player)
             elif type(bullet) == BulletPlayer:
+                for enemy in enemies:
+                    bullet.update(enemy)
+            elif type(bullet) == BulletCharged:
                 for enemy in enemies:
                     bullet.update(enemy)
 
@@ -27,6 +31,8 @@ class BulletHandler:
             self.bullets.append(BulletEnemy(center))
         elif type == BULLET_PLAYER_TYPE:
             self.bullets.append(BulletPlayer(center))
+        elif type == CHARGED_BULLET_PLAYER_TYPE:
+            self.bullets.append(BulletCharged(center))
 
     def remove_bullet(self, bullet):
         self.bullets.remove(bullet)

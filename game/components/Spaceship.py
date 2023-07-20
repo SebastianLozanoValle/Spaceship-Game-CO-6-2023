@@ -1,5 +1,5 @@
 import pygame
-from game.utils.constants import SPACESHIP, SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_PLAYER_TYPE, SPACESHIP_SHIELD
+from game.utils.constants import SPACESHIP, SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_PLAYER_TYPE, SPACESHIP_SHIELD, CHARGED_BULLET_PLAYER_TYPE
 from game.components.power_ups.shield import Shield
 
 
@@ -9,6 +9,8 @@ class Spaceship:
     HEIGHT = 60
     X_POS = (SCREEN_WIDTH // 2) - WIDTH
     Y_POS = 500
+    CHARGED_SHOOT_WAIT_TIME = 5000
+    CHARGED_SHOOTING_TIME = 5
     SHOOTING_TIME = 5
 
     def __init__(self):
@@ -17,10 +19,11 @@ class Spaceship:
         self.rect = self.image.get_rect()
         self.rect.x = self.X_POS
         self.rect.y = self.Y_POS
-        self.is_alive = True
         self.shooting_time = 0
         self.has_shield = False
         self.time_up = 0
+        self.lp = 1
+        self.last_charged_shoot = -5000
 
     def update(self, game_speed, user_input, bullet_handler):
         self.shooting_time += 1
@@ -38,6 +41,9 @@ class Spaceship:
 
         if user_input[pygame.K_SPACE]:
             self.shoot(bullet_handler)
+
+        if user_input[pygame.K_q]:
+            self.charged_shoot(bullet_handler)
 
         if self.has_shield:
             time_to_show = round((self.time_up - pygame.time.get_ticks())/1000, 2)
@@ -70,6 +76,18 @@ class Spaceship:
         if self.shooting_time % self.SHOOTING_TIME == 0:
             bullet_handler.add_bullet(BULLET_PLAYER_TYPE, self.rect.center)
 
+    # def charged_shoot(self, bullet_handler):
+    #     if self.shooting_time % self.CHARGED_SHOOTING_TIME == 0:
+    #         bullet_handler.add_bullet(CHARGED_BULLET_PLAYER_TYPE, self.rect.center)
+            
+
+    def charged_shoot(self, bullet_handler):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_charged_shoot >= self.CHARGED_SHOOT_WAIT_TIME:
+            bullet_handler.add_bullet(CHARGED_BULLET_PLAYER_TYPE, self.rect.center)
+            # Actualizar el tiempo del último disparo cargado
+            self.last_charged_shoot = current_time
+
     def active_power_up(self, power_up):
         self.time_up = power_up.time_up
         if type(power_up) == Shield:
@@ -88,6 +106,7 @@ class Spaceship:
         self.rect = self.image.get_rect()
         self.rect.x = self.X_POS
         self.rect.y = self.Y_POS
-        self.is_alive = True
+        self.lp = 1
         self.shooting_time = 0
         self.has_shield = False
+        self.last_charged_shoot = -5000

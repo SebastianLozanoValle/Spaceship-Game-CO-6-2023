@@ -65,7 +65,7 @@ class Game:
             self.bullet_handler.update(self.player, self.enemy_handler.enemies)
             self.power_up_handler.update(self.player)
             self.score = self.enemy_handler.enemies_destroyed
-            if not self.player.is_alive:
+            if not self.player.lp > 0:
                 pygame.time.delay(300)
                 self.number_deaths += 1
                 if self.score > self.best_score:
@@ -99,7 +99,7 @@ class Game:
 
     def draw_timer(self, screen):
         font = pygame.font.Font(None, 36)
-        text = font.render("Tiempo transcurrido: {:.2f}".format(self.timer), True, (255, 255, 255))
+        text = font.render("Tiempo transcurrido: {:.2f}...{}".format(self.timer,self.player.lp), True, (255, 255, 255))
         screen.blit(text, (10, 10))
 
     def draw_menu(self):
@@ -109,7 +109,7 @@ class Game:
         else:
             text, text_rect = text_utils.get_message('Press any key to restart', 30, (255,255,255))
             best_score, best_score_rect = text_utils.get_message(f'The best score is: {self.best_score}', 30, (255,255,255), heigth=SCREEN_HEIGHT//2 + 50)
-            score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 30, (255,255,255), heigth=SCREEN_HEIGHT//2 + 100)
+            score, score_rect = text_utils.get_message(f'Your score is: {self.score}player: {self.player.lp}', 30, (255,255,255), heigth=SCREEN_HEIGHT//2 + 100)
             self.screen.blit(text, text_rect)
             self.screen.blit(best_score,best_score_rect)
             self.screen.blit(score, score_rect)
