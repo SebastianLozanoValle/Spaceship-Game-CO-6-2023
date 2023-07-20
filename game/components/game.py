@@ -104,17 +104,23 @@ class Game:
 
     def draw_timer(self, screen):
         font = pygame.font.Font(None, 36)
-        text = font.render("Tiempo transcurrido: {:.2f}...{}".format(self.timer,self.player.lp), True, (255, 255, 255))
+        text = font.render("Tiempo transcurrido: {:.2f}".format(self.timer), True, (255, 255, 255))
         screen.blit(text, (10, 10))
 
     def draw_menu(self):
         if self.number_deaths == 0:
             text, text_rect = text_utils.get_message('Press any key to start', 30, (255,255,255))
             self.screen.blit(text, text_rect)
+        elif self.enemy_handler.num_bosses >= 2:
+            num_deadths_before_win, num_deadths_before_win_rect = text_utils.get_message(f'you win after {self.number_deaths} filed trys, congratulations!', 30,(255,255,255))
+            score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 30, (255,255,255), heigth=SCREEN_HEIGHT//2 + 50)
+            self.screen.blit(num_deadths_before_win, num_deadths_before_win_rect)
+            self.screen.blit(score, score_rect)
+            
         else:
             text, text_rect = text_utils.get_message('Press any key to restart', 30, (255,255,255))
             best_score, best_score_rect = text_utils.get_message(f'The best score is: {self.best_score}', 30, (255,255,255), heigth=SCREEN_HEIGHT//2 + 50)
-            score, score_rect = text_utils.get_message(f'Your score is: {self.score}player: {self.player.lp}', 30, (255,255,255), heigth=SCREEN_HEIGHT//2 + 100)
+            score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 30, (255,255,255), heigth=SCREEN_HEIGHT//2 + 100)
             self.screen.blit(text, text_rect)
             self.screen.blit(best_score,best_score_rect)
             self.screen.blit(score, score_rect)

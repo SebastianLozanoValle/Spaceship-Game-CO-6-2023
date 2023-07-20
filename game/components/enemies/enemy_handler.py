@@ -56,6 +56,8 @@ class EnemyHandler:
             self.num_ships -= 1
         if isinstance(enemy, FlagShip):
             self.num_ships -= 1
+        if isinstance(enemy, FinalBoss):
+            self.num_bosses += 1
 
     def reset(self):
         self.enemies = []
