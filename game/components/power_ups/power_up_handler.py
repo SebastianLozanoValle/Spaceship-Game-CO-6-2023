@@ -1,9 +1,10 @@
 import random
 
 from game.components.power_ups.shield import Shield
+from game.components.power_ups.heart import Heart
 
 class PowerUpHandler:
-
+    POWERS_TYPES = ["Shield", "Heart"]
     INTERVAL_TIME = [150,250]
 
     def __init__(self):
@@ -22,6 +23,7 @@ class PowerUpHandler:
                 self.remove_power_up(power_up)
             if power_up.is_used:
                 player.active_power_up(power_up)
+                player.gain_lp(power_up)
 
     def draw(self, screen):
         for power_up in self.power_ups:
@@ -29,6 +31,7 @@ class PowerUpHandler:
 
     def add_power_up(self):
         self.power_ups.append(Shield())
+        self.power_ups.append(Heart())
 
     def remove_power_up(self, power_up):
         self.power_ups.remove(power_up)

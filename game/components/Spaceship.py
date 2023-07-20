@@ -1,6 +1,7 @@
 import pygame
 from game.utils.constants import SPACESHIP, SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_PLAYER_TYPE, SPACESHIP_SHIELD, CHARGED_BULLET_PLAYER_TYPE
 from game.components.power_ups.shield import Shield
+from game.components.power_ups.heart import Heart
 
 
 class Spaceship:
@@ -10,8 +11,7 @@ class Spaceship:
     X_POS = (SCREEN_WIDTH // 2) - WIDTH
     Y_POS = 500
     CHARGED_SHOOT_WAIT_TIME = 5000
-    CHARGED_SHOOTING_TIME = 5
-    SHOOTING_TIME = 10
+    SHOOTING_TIME = 5
 
     def __init__(self):
         self.image = SPACESHIP
@@ -27,7 +27,19 @@ class Spaceship:
 
     def update(self, game_speed, user_input, bullet_handler):
         self.shooting_time += 1
-        if user_input[pygame.K_LEFT]:
+        if user_input[pygame.K_LEFT] and user_input[pygame.K_UP]:
+            self.diagona_up_left(game_speed)
+
+        elif user_input[pygame.K_RIGHT] and user_input[pygame.K_UP]:
+            self.diagonal_up_rigth(game_speed)
+
+        elif user_input[pygame.K_LEFT] and user_input[pygame.K_DOWN]:
+            self.diagonal_down_left(game_speed)
+
+        elif user_input[pygame.K_RIGHT] and user_input[pygame.K_DOWN]:
+            self.diagonal_down_rigth(game_speed)
+
+        elif user_input[pygame.K_LEFT]:
             self.move_left(game_speed)
 
         elif user_input[pygame.K_RIGHT]:
@@ -72,20 +84,30 @@ class Spaceship:
         if self.rect.y <= (SCREEN_HEIGHT - self.HEIGHT):
             self.rect.y += game_speed
 
+    def diagona_up_left(self, game_speed):
+        self.move_left(game_speed)
+        self.move_up(game_speed)
+
+    def diagonal_up_rigth(self, game_speed):
+        self.move_rigth(game_speed)
+        self.move_up(game_speed)
+
+    def diagonal_down_left(self, game_speed):
+        self.move_left(game_speed)
+        self.move_down(game_speed)
+
+    def diagonal_down_rigth(self, game_speed):
+        self.move_rigth(game_speed)
+        self.move_down(game_speed)
+
     def shoot(self, bullet_handler):
         if self.shooting_time % self.SHOOTING_TIME == 0:
             bullet_handler.add_bullet(BULLET_PLAYER_TYPE, self.rect.center)
-
-    # def charged_shoot(self, bullet_handler):
-    #     if self.shooting_time % self.CHARGED_SHOOTING_TIME == 0:
-    #         bullet_handler.add_bullet(CHARGED_BULLET_PLAYER_TYPE, self.rect.center)
-            
 
     def charged_shoot(self, bullet_handler):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_charged_shoot >= self.CHARGED_SHOOT_WAIT_TIME:
             bullet_handler.add_bullet(CHARGED_BULLET_PLAYER_TYPE, self.rect.center)
-            # Actualizar el tiempo del último disparo cargado
             self.last_charged_shoot = current_time
 
     def active_power_up(self, power_up):
@@ -99,6 +121,11 @@ class Spaceship:
         self.has_shield = False
         self.image = SPACESHIP
         self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
+
+    def gain_lp(self, power_up):
+        if type(power_up) == Heart:
+            if self.lp < 15:
+                self.lp += 1
 
     def reset(self):
         self.image = SPACESHIP

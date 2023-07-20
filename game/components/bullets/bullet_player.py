@@ -7,7 +7,7 @@ class BulletPlayer(Bullet):
 
     WIDTH = 9
     HEIGHT = 32
-    SPEED = 20
+    SPEED = 2
 
     def __init__(self, center):
         self.image = BULLET

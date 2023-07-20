@@ -127,7 +127,9 @@ class Game:
     
     def draw_score(self):
         score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 20, (255,255,255), 1000, 40)
+        lp, lp_rect = text_utils.get_message(f'tienes {self.player.lp} LP', 20, (255,255,255), 1000, 80)
         self.screen.blit(score, score_rect)
+        self.screen.blit(lp, lp_rect)
 
 
     def reset(self):
