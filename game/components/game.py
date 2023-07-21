@@ -24,7 +24,7 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 0
         self.player = Spaceship()
-        self.enemy_handler = EnemyHandler(self)
+        self.enemy_handler = EnemyHandler()
         self.bullet_handler = BulletHandler()
         self.power_up_handler = PowerUpHandler()
         self.planet_handler = PlanetHandler()
@@ -63,14 +63,18 @@ class Game:
             self.timer = (pygame.time.get_ticks() - self.game_start_time) / 1000
             user_input = pygame.key.get_pressed()
             self.player.update(self.game_speed, user_input, self.bullet_handler)
-            self.enemy_handler.update(self.bullet_handler)
+            self.enemy_handler.update(self.bullet_handler,self.timer)
             self.bullet_handler.update(self.player, self.enemy_handler.enemies)
-            self.power_up_handler.update(self.player)
+            self.power_up_handler.update(self.player, self.bullet_handler)
             self.planet_handler.update()
             self.score = self.enemy_handler.enemies_destroyed
             if not self.player.lp > 0:
                 pygame.time.delay(300)
                 self.number_deaths += 1
+                if self.score > self.best_score:
+                    self.best_score = self.score
+                self.playing = False
+            elif self.enemy_handler.num_bosses >= 2:
                 if self.score > self.best_score:
                     self.best_score = self.score
                 self.playing = False
@@ -108,14 +112,16 @@ class Game:
         screen.blit(text, (10, 10))
 
     def draw_menu(self):
-        if self.number_deaths == 0:
-            text, text_rect = text_utils.get_message('Press any key to start', 30, (255,255,255))
-            self.screen.blit(text, text_rect)
-        elif self.enemy_handler.num_bosses >= 2:
+        
+        if self.enemy_handler.num_bosses >= 2:
             num_deadths_before_win, num_deadths_before_win_rect = text_utils.get_message(f'you win after {self.number_deaths} filed trys, congratulations!', 30,(255,255,255))
             score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 30, (255,255,255), heigth=SCREEN_HEIGHT//2 + 50)
             self.screen.blit(num_deadths_before_win, num_deadths_before_win_rect)
             self.screen.blit(score, score_rect)
+        elif self.number_deaths == 0:
+            text, text_rect = text_utils.get_message('Press any key to start', 30, (255,255,255))
+            self.screen.blit(text, text_rect)
+        
             
         else:
             text, text_rect = text_utils.get_message('Press any key to restart', 30, (255,255,255))

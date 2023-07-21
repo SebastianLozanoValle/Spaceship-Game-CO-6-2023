@@ -1,7 +1,8 @@
 import pygame
-from game.utils.constants import SPACESHIP, SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_PLAYER_TYPE, SPACESHIP_SHIELD, CHARGED_BULLET_PLAYER_TYPE
+from game.utils.constants import SPACESHIP, SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_PLAYER_TYPE, SPACESHIP_SHIELD, CHARGED_BULLET_PLAYER_TYPE,BULLET_POW_TYPE
 from game.components.power_ups.shield import Shield
 from game.components.power_ups.heart import Heart
+from game.components.power_ups.pow import Pow
 
 
 class Spaceship:
@@ -126,6 +127,10 @@ class Spaceship:
         if type(power_up) == Heart:
             if self.lp < 15:
                 self.lp += 1
+
+    def use_pow(self, power_up, bullet_handler):
+        if type(power_up) == Pow:
+            bullet_handler.add_bullet(BULLET_POW_TYPE, (SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
 
     def reset(self):
         self.image = SPACESHIP

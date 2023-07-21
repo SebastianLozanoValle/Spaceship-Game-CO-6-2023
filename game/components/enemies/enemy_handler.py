@@ -8,15 +8,16 @@ from game.components.enemies.final_boss import FinalBoss
 
 class EnemyHandler:
     ENEMY_TYPES = [Ship,FlagShip]
-    def __init__(self, game):
-        self.game = game
+    def __init__(self):
+        self.timer = 0
         self.enemies = []
         self.enemies_destroyed = 0
         self.num_ships = 0
         self.num_xwings = 0
         self.num_bosses = 0
 
-    def update(self, bullet_handler):
+    def update(self, bullet_handler,timer):
+        self.timer = timer
         self.add_enemy()
         for enemy in self.enemies:
             enemy.update(bullet_handler)
@@ -40,13 +41,13 @@ class EnemyHandler:
 
     def add_enemy(self):
         if len(self.enemies) < 10:
-            if self.num_ships < 9 and self.game.timer < 55:
+            if self.num_ships < 9 and self.timer < 55:
                 self.enemies.append(self.ENEMY_TYPES[random.randint(0, len(self.ENEMY_TYPES) - 1)]())
                 self.num_ships += 1
-            if self.game.timer > 10 and self.num_xwings < 1:
+            if self.timer > 10 and self.num_xwings < 1:
                 self.enemies.append(XWing())
                 self.num_xwings += 1
-            if self.game.timer > 60 and self.num_bosses <1:
+            if self.timer > 60 and self.num_bosses <1:
                 self.enemies.append(FinalBoss())
                 self.num_bosses +=1
 

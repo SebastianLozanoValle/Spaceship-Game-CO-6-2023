@@ -17,6 +17,8 @@ BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
+POW = pygame.image.load(os.path.join(IMG_DIR, 'Other/pow.jpg'))
+
 DEFAULT_TYPE = "default"
 SHIELD_TYPE = 'shield'
 
@@ -39,6 +41,7 @@ RIGTH = 'rigth'
 BULLET_ENEMY_TYPE = 'enemy'
 BULLET_PLAYER_TYPE = 'Spaceship'
 CHARGED_BULLET_PLAYER_TYPE = 'charged'
+BULLET_POW_TYPE = 'pow'
 
 PLANET_1 = pygame.image.load(os.path.join(IMG_DIR, 'Other/planet_1.png'))
 PLANET_2 = pygame.image.load(os.path.join(IMG_DIR, 'Other/planet_2.png'))
